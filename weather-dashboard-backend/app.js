@@ -8,14 +8,7 @@ const {seedDatabase} = require('./controllers/cities');
 
 
 const app = express();
-const corsOptions = {
-    origin: 'https://localhost:3000', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-    allowedHeaders: ['Content-Type', 'Authorization'], 
-    credentials: true 
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 // Connect to MongoDB database

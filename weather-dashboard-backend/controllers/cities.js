@@ -65,7 +65,7 @@ const deleteCities = async (req, res) => {
 
 const seedDatabase = async () => {
   try {
-    const cityCount = await City.countDocuments();
+    const cityCount = await City.find();
 
     if (cityCount === 0) {
       console.log("Seeding the database...");
