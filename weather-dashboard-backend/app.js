@@ -6,7 +6,17 @@ const bodyParser = require('body-parser');
 const Routes = require('./routes/index');
 const {seedDatabase} = require('./controllers/cities');
 
+
 const app = express();
+const corsOptions = {
+    origin: 'https://localhost:3000', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true 
+};
+
+app.use(cors(corsOptions));
+
 
 // Connect to MongoDB database
 connect();
