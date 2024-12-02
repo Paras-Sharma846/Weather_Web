@@ -1,25 +1,25 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connect = require('./config/db');
 const bodyParser = require('body-parser');
+const connect = require('./config/db');
 const Routes = require('./routes/index');
-const {seedDatabase} = require('./controllers/cities');
+const { errorHandler } = require('./middlewares/errorMiddleware');
 
 const app = express();
-
-// Connect to MongoDB database
-connect();
-
-// Seed the database with initial data
-seedDatabase()
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 
+// Connect to MongoDB database
+connect();
+
 // Routes
 app.use('/api', Routes);
+
+// Error Handling Middleware
+app.use(errorHandler); 
 
 // Start server
 const PORT = process.env.PORT || 5000;

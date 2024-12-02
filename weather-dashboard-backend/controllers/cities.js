@@ -1,8 +1,26 @@
+const fs = require("fs");
+const path = require("path");
 const City = require("../models/city");
-const mockData = require("../config/mock");
+
+const mockDataPath = path.join(__dirname, "../config/mock.json"); 
 
 const getCities = async (req, res) => {
   try {
+    let citiesData = null;
+    try {
+      const mockData = fs.readFileSync(mockDataPath, "utf-8");
+      citiesData = JSON.parse(mockData); 
+      console.log(citiesData);
+    } catch (err) {
+      console.log("Mock data not found or invalid, fetching from database...");
+    }
+
+    // If mock data exists, return it
+    if (citiesData) {
+      return res.json(citiesData);
+    }
+
+    // If no mock data, fetch from the database
     const cities = await City.find();
     res.json(cities);
   } catch (err) {
@@ -63,26 +81,9 @@ const deleteCities = async (req, res) => {
   }
 };
 
-const seedDatabase = async () => {
-  try {
-    const cityCount = await City.countDocuments();
-
-    if (cityCount === 0) {
-      console.log("Seeding the database...");
-      await City.insertMany(mockData);
-      console.log("Database seeded with mock data.");
-    } else {
-      console.log("Database already has sufficient data.");
-    }
-  } catch (error) {
-    console.error("Error seeding the database:", error.message);
-  }
-};
 
 module.exports = {
   getCities,
   addCities,
   deleteCities,
-  seedDatabase,
-  mockData,
 };
